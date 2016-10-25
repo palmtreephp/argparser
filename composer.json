@@ -1,0 +1,18 @@
+{
+  "name": "palmtree/argparser",
+  "description": "ArgParser component for Palmtree PHP",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "andyexeter",
+      "email": "palmer.andy@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Palmtree\\ArgParser\\": ""
+    }
+  }
+}
