@@ -5,11 +5,13 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "andyexeter",
-      "email": "palmer.andy@gmail.com"
+      "name": "Andy Palmer",
+      "email": "andy@andypalmer.me"
     }
   ],
-  "require": {},
+  "require": {
+    "palmtree/nameconverter": "^1.0.4"
+  },
   "autoload": {
     "psr-4": {
       "Palmtree\\ArgParser\\": ""
