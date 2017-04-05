@@ -23,7 +23,9 @@ class ArgParser
             $args = [$primary => $args];
         }
 
-        $this->setNameConverter($nameConverter);
+        if ($nameConverter instanceof NameConverterInterface) {
+            $this->setNameConverter($nameConverter);
+        }
 
         $this->setArgs($args);
     }
