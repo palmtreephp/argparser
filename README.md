@@ -1,6 +1,6 @@
 # Palmtree ArgParser
 
-[![License](http://img.shields.io/packagist/l/palmtree/curl.svg)](LICENSE)
+[![License](http://img.shields.io/packagist/l/palmtree/argparser.svg)](LICENSE)
 
 Parse an array of arguments and call matching setters and/or merge with default arguments.
 
