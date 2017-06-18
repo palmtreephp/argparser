@@ -3,6 +3,7 @@
 namespace Palmtree\ArgParser;
 
 use Palmtree\NameConverter\NameConverterInterface;
+use Palmtree\NameConverter\SnakeCaseToCamelCaseNameConverter;
 
 class ArgParser
 {
@@ -23,9 +24,12 @@ class ArgParser
             $args = [$primary => $args];
         }
 
-        if ($nameConverter instanceof NameConverterInterface) {
-            $this->setNameConverter($nameConverter);
+        // By default we convert args like error_message to errorMessage
+        if (!$nameConverter instanceof NameConverterInterface) {
+            $nameConverter = new SnakeCaseToCamelCaseNameConverter();
         }
+
+        $this->setNameConverter($nameConverter);
 
         $this->setArgs($args);
     }
@@ -39,8 +43,14 @@ class ArgParser
     {
         $callable = [$object];
         foreach ($this->getArgs() as $key => $value) {
+            if ($this->nameConverter instanceof NameConverterInterface) {
+                $key = $this->nameConverter->normalize($key);
+            } else {
+                $key = ucfirst($key);
+            }
+
             // If the key is 'name', see if 'setName' is a callable method on $object.
-            $method      = 'set' . ucfirst($key);
+            $method      = 'set' . $key;
             $callable[1] = $method;
 
             if (is_callable($callable)) {
@@ -103,16 +113,6 @@ class ArgParser
      */
     public function setArgs($args)
     {
-        if ($this->nameConverter instanceof NameConverterInterface) {
-            foreach ($args as $key => $value) {
-                $normalizedKey = $this->nameConverter->normalize($key);
-                if ($normalizedKey !== $key) {
-                    $args[$normalizedKey] = $value;
-                    unset($args[$key]);
-                }
-            }
-        }
-
         $this->args = $args;
 
         return $this;
