@@ -23,9 +23,7 @@ class ArgParser
         if (is_string($args) && func_num_args() === 2) {
             $args = [$primary => $args];
         }
-/**
- * Class Template
- */
+
         // By default we convert args like error_message to errorMessage
         if (!$nameConverter instanceof NameConverterInterface) {
             $nameConverter = new SnakeCaseToCamelCaseNameConverter();
