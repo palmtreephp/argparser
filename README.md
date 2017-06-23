@@ -43,7 +43,7 @@ class SomeClass {
 ```
 ```php
 <?php
-// Calls setName('Andy') and sets the force arg to true
+// Calls $obj->setName('Andy') and sets the force arg to true
 $obj = new SomeClass([
     'name' => 'Andy',
     'force' => true,
