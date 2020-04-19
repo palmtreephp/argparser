@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "palmtree/nameconverter": "^1.0.4"
+        "php": ">=7.1",
+        "palmtree/nameconverter": "~2.0"
     },
     "autoload": {
         "psr-4": {

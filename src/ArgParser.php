@@ -9,14 +9,13 @@ class ArgParser
 {
     /** @var NameConverterInterface */
     protected $nameConverter;
+    /** @var array */
     protected $args;
 
     /**
-     * @param array|string           $args
-     * @param string                 $primary
-     * @param NameConverterInterface $nameConverter
+     * @param array|string $args
      */
-    public function __construct($args = [], $primary = '', NameConverterInterface $nameConverter = null)
+    public function __construct($args = [], ?string $primary = '', ?NameConverterInterface $nameConverter = null)
     {
         if (\is_string($args) && \func_num_args() > 1) {
             $args = [$primary => $args];
@@ -33,10 +32,9 @@ class ArgParser
     }
 
     /**
-     * @param      $object
-     * @param bool $removeCalled
+     * @param object $object
      */
-    public function parseSetters($object, $removeCalled = true)
+    public function parseSetters($object, bool $removeCalled = true): void
     {
         $callable = [$object];
         foreach ($this->args as $key => $value) {
@@ -63,46 +61,30 @@ class ArgParser
     /**
      * Returns an array of resolved options from the current arguments
      * and given defaults.
-     *
-     * @return array
      */
-    public function resolveOptions(array $defaults)
+    public function resolveOptions(array $defaults): array
     {
         return array_replace_recursive($defaults, $this->args);
     }
 
-    /**
-     * @return array
-     */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }
 
-    /**
-     * @return ArgParser
-     */
-    public function setNameConverter(NameConverterInterface $nameConverter)
+    public function setNameConverter(NameConverterInterface $nameConverter): self
     {
         $this->nameConverter = $nameConverter;
 
         return $this;
     }
 
-    /**
-     * @return NameConverterInterface
-     */
-    public function getNameConverter()
+    public function getNameConverter(): NameConverterInterface
     {
         return $this->nameConverter;
     }
 
-    /**
-     * @param array|string $args
-     *
-     * @return ArgParser
-     */
-    public function setArgs($args)
+    public function setArgs(array $args): self
     {
         $this->args = $args;
 
