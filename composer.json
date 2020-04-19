@@ -1,20 +1,26 @@
 {
-  "name": "palmtree/argparser",
-  "description": "ArgParser component for Palmtree PHP",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Andy Palmer",
-      "email": "andy@andypalmer.me"
+    "name": "palmtree/argparser",
+    "description": "ArgParser component for Palmtree PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andy Palmer",
+            "email": "andy@andypalmer.me"
+        }
+    ],
+    "require": {
+        "palmtree/nameconverter": "^1.0.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Palmtree\\ArgParser\\": "src"
+        }
+    },
+    "require-dev": {
+        "palmtree/php-cs-fixer-config": "^1.0"
+    },
+    "scripts": {
+        "fix": "vendor/bin/php-cs-fixer fix --diff"
     }
-  ],
-  "require": {
-    "palmtree/nameconverter": "^1.0.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "Palmtree\\ArgParser\\": "src"
-    }
-  }
 }

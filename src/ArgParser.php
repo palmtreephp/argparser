@@ -12,15 +12,13 @@ class ArgParser
     protected $args;
 
     /**
-     * ArgParser constructor.
-     *
-     * @param array                  $args
+     * @param array|string           $args
      * @param string                 $primary
      * @param NameConverterInterface $nameConverter
      */
-    public function __construct($args = [], $primary = '', $nameConverter = null)
+    public function __construct($args = [], $primary = '', NameConverterInterface $nameConverter = null)
     {
-        if (is_string($args) && func_num_args() === 2) {
+        if (\is_string($args) && \func_num_args() > 1) {
             $args = [$primary => $args];
         }
 
@@ -35,14 +33,13 @@ class ArgParser
     }
 
     /**
-     *
      * @param      $object
      * @param bool $removeCalled
      */
     public function parseSetters($object, $removeCalled = true)
     {
         $callable = [$object];
-        foreach ($this->getArgs() as $key => $value) {
+        foreach ($this->args as $key => $value) {
             if ($this->nameConverter instanceof NameConverterInterface) {
                 $key = $this->nameConverter->normalize($key);
             } else {
@@ -53,7 +50,7 @@ class ArgParser
             $method      = 'set' . $key;
             $callable[1] = $method;
 
-            if (is_callable($callable)) {
+            if (\is_callable($callable)) {
                 $object->$method($value);
 
                 if ($removeCalled) {
@@ -67,15 +64,11 @@ class ArgParser
      * Returns an array of resolved options from the current arguments
      * and given defaults.
      *
-     * @param array $defaults
-     *
      * @return array
      */
-    public function resolveOptions($defaults)
+    public function resolveOptions(array $defaults)
     {
-        $resolved = array_replace_recursive($defaults, $this->getArgs());
-
-        return $resolved;
+        return array_replace_recursive($defaults, $this->args);
     }
 
     /**
@@ -87,8 +80,6 @@ class ArgParser
     }
 
     /**
-     * @param NameConverterInterface $nameConverter
-     *
      * @return ArgParser
      */
     public function setNameConverter(NameConverterInterface $nameConverter)
