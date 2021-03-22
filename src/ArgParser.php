@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Palmtree\ArgParser;
 
@@ -36,20 +36,13 @@ class ArgParser
      */
     public function parseSetters($object, bool $removeCalled = true): void
     {
-        $callable = [$object];
         foreach ($this->args as $key => $value) {
             if ($this->nameConverter instanceof NameConverterInterface) {
                 $key = $this->nameConverter->normalize($key);
-            } else {
-                $key = ucfirst($key);
             }
 
-            // If the key is 'name', see if 'setName' is a callable method on $object.
-            $method      = 'set' . $key;
-            $callable[1] = $method;
-
-            if (\is_callable($callable)) {
-                $object->$method($value);
+            if ($method = $this->buildSetterMethod($object, $key)) {
+                $this->callCallable($object, $method, $value);
 
                 if ($removeCalled) {
                     unset($this->args[$key]);
@@ -89,5 +82,44 @@ class ArgParser
         $this->args = $args;
 
         return $this;
+    }
+
+    private function buildSetterMethod($object, string $key): ?string
+    {
+        // Setter. e.g setFoo
+        $method = 'set' . ucfirst($key);
+
+        if (\is_callable([$object, $method])) {
+            return $method;
+        }
+
+        // Adder. e.g addFoo
+        if (substr($key, -1) === 's') {
+            $method = 'add' . ucfirst(substr($key, 0, -1));
+
+            if (\is_callable([$object, $method])) {
+                return $method;
+            }
+        }
+
+        return null;
+    }
+
+    private function callCallable($object, $method, $value): void
+    {
+        if (\is_array($value)) {
+            try {
+                $parameter = new \ReflectionParameter([$object, $method], 0);
+                if ($parameter->isVariadic()) {
+                    $object->$method(...$value);
+
+                    return;
+                }
+            } catch (\ReflectionException $e) {
+                // do nothing
+            }
+        }
+
+        $object->$method($value);
     }
 }

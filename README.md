@@ -5,7 +5,7 @@
 Parse an array of arguments and call matching setters and/or merge with default arguments.
 
 ## Requirements
-* PHP >= 5.6
+* PHP >= 7.1
 
 ## Installation
 
@@ -23,19 +23,19 @@ use Palmtree\ArgParser\ArgParser;
 
 class SomeClass {
     public static $defaultArgs = [
-        'force' => false,  
+        'force' => false,
     ];
-    
+
     private $name;
     private $args = [];
-    
+
     public function __construct($args = []) {
         $parser = new ArgParser($args);
-        
+
         $parser->parseSetters($this);
         $this->args = $parser->resolveOptions(static::$defaultArgs);
     }
-    
+
     public function setName($name) {
         $this->name = $name;
     }
